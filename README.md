@@ -15,7 +15,8 @@ Contents
 
 * `HiveMQ Account set up - Broker`_
 * `Visual Studio Code Installation`_
-* `Virtual Environment Set up and paho package installation`_
+* `Virtual Environment Set up`_
+* `Paho installation - Clients`_
 * `Python Code - Subscribe & Publish Messages (Clients)`_
 * `Webclient Execution`_
 * `WebSocket Execution`_
@@ -42,7 +43,7 @@ Visual Studio Code is a streamlined code editor with support for development ope
 Download and install the software
 Link to download software: https://code.visualstudio.com/
 
-Virtual Environment Setup and paho package installation
+Virtual Environment Set up
 ------------
 A Python virtual environment is a tool used to create isolated Python environments on a single machine, which can each have their own installed packages and Python version. This allows for easy management of dependencies and isolation of different projects, so that they do not interfere with each other. It also makes it easy to switch between different versions of packages and Python versions, as well as to share a specific set of packages with others. This is particularly useful when working on projects with different requirements or when sharing code with others.
 
@@ -135,7 +136,7 @@ For Web clieht execution, use client.connect function as below.
      # connect to HiveMQ Cloud on port 8883 (default for MQTT)
        client.connect("a9da7498ddbd475eb817b02fb90e73e9.s1.eu.hivemq.cloud", 8883)
 Steps
-1. Login in to HiveMQ Cloud
+1. Login in to HiveMQ Cloud https://www.hivemq.com/downloads/
 2. Go to Web client under manage cluster option
 3. Provide the user name and password, then click on connnect
 4. Subscribe the topic 'testtopic/68144686' - to receive messages from paho client (i.e. VS Code Environment)
