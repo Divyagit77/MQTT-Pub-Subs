@@ -1,9 +1,9 @@
 HiveMQ MQTT Python Client
 ================================
 
-This document describes the source code for the `HiveMQ <broker.hivemq.com>`_ MQTT Python client library, which implements versions 5.0, 3.1.1, and 3.1 of the MQTT protocol.
+This document describes the source code for the `HiveMQ <broker.hivemq.com>`_ MQTT Python client library.
 
-This code provides a client class which enable applications to connect to an `MQTT broker to publish messages, and to subscribe to topics and receive published messages. It also provides some helper functions to make publishing one off messages to an MQTT server very straightforward.
+This code provides a client class which enable applications to connect to an `MQTT broker to publish messages, and to subscribe to topics and receive published messages. 
 
 It supports Python 2.7.9+ or 3.6+.
 
@@ -15,174 +15,128 @@ HiveMQ is a MQTT broker - a messaging platform for fast, efficient and reliable 
 Contents
 --------
 
-* Installation_
-* `Known limitations`_
-* `Usage and API`_
-    * `Client`_
-        * `Constructor / reinitialise`_
-        * `Option functions`_
-        * `Connect / reconnect / disconnect`_
-        * `Network loop`_
-        * `Publishing`_
-        * `Subscribe / Unsubscribe`_
-        * `Callbacks`_
-        * `External event loop support`_
-        * `Global helper functions`_
-    * `Publish`_
-        * `Single`_
-        * `Multiple`_
-    * `Subscribe`_
-        * `Simple`_
-        * `Using Callback`_
-* `Reporting bugs`_
-* `More information`_
+* `HiveMQ Account set up - Broker`_
+* `Visual Studio Code Installation`_
+* `Virtual Environment Set up and paho package installation`_
+* `Python Code - Subscribe & Publish Messages (Clients)`_
+* `WebSocket and Webclient Execution`_
 
 
-Installation
+HiveMQ Account Set up - Broker
 ------------
-
-The latest stable version is available in the Python Package Index (PyPi) and can be installed using
-
-::
-
-    pip install paho-mqtt
-
-Or with ``virtualenv``:
-
-::
-
-    virtualenv paho-mqtt
-    source paho-mqtt/bin/activate
-    pip install paho-mqtt
-
-To obtain the full code, including examples and tests, you can clone the git repository:
-
-::
-
-    git clone https://github.com/eclipse/paho.mqtt.python
+Visit: https://www.hivemq.com/
+Go to 'Get HiveMQ'
+Click on Sign up 'HiveMQ Cloud'
+Shift to sign up page from log in page 'set email id & password'
+Confirmation mail will be sent your mail id - 'Confirm my account'
+Complete your profile by providing name, job profile, company
+Set up credential for your IoT devices - set username and password
+Tools: Choose MQTT Webclient
+Under connection settings: Provide your IoT device credentials set before and click on connect
+Cluster set up:
+Using cluster option, you can create new cluster if needed. (Note that for free account maximum of 2 clusters only be created)
+When setting up cluster, you can choose the cloud provider (Example: Microsoft Azure or AWS)
 
 
-Once you have the code, it can be installed from your repository as well:
+Visual Studio Code Installation
+------------
+Visual Studio Code is a streamlined code editor with support for development operations like debugging, task running, and version control. We will be developing our code using this software.
+Download and install the software
+Link to download software: https://code.visualstudio.com/
 
-::
+Virtual Environment Setup and paho package installation
+------------
+A Python virtual environment is a tool used to create isolated Python environments on a single machine, which can each have their own installed packages and Python version. This allows for easy management of dependencies and isolation of different projects, so that they do not interfere with each other. It also makes it easy to switch between different versions of packages and Python versions, as well as to share a specific set of packages with others. This is particularly useful when working on projects with different requirements or when sharing code with others.
 
-    cd paho.mqtt.python
-    python setup.py install
+Steps:
+Open Vistual Studio code application from your system
+Create a folder in your system
+1. In VS code--> Go to Files-->Open Folder-->'Open the folder you created'
+2. Go to Terminal-->New Terminal-->Type: python -m venv 'Name_for_your_virtualenvironment'
+As a confirmation of successful virtual environment creation, you will see set of new folders under the explorer tab
+3. Now to active the envrionment, in terminal type: 'Name_for_your_virtualenvironment'/Scripts/Activate.bat
+4. To select interpreter go to View-->Command Palatt-->type python: Select Interpreter-->Enter interpreter path-->Find-->'Open the folder you created'-->Python.exe
+Create a new terminal and confirm that your environment is changed to the new virtual environment you created
 
-To perform all test (including MQTT v5 test), you also need to clone paho.mqtt.testing in paho.mqtt.python folder::
+Note: Run this in command terminal, powershell terminal requires special permission which may not excute the command.
 
-    git clone https://github.com/eclipse/paho.mqtt.testing.git
-
-Known limitations
------------------
-
-The following are the known unimplemented MQTT feature.
-
-When clean_session is False, the session is only stored in memory not persisted. This means that
-when client is restarted (not just reconnected, the object is recreated usually because the
-program was restarted) the session is lost. This result in possible message lost.
-
-The following part of client session is lost:
-
-* QoS 2 messages which have been received from the Server, but have not been completely acknowledged.
-
-  Since the client will blindly acknowledge any PUBCOMP (last message of a QoS 2 transaction), it
-  won't hang but will lost this QoS 2 message.
-
-* QoS 1 and QoS 2 messages which have been sent to the Server, but have not been completely acknowledged.
-
-  This means that message passed to publish() may be lost. This could be mitigated by taking care
-  that all message passed to publish() has a corresponding on_publish() call.
-
-  It also means that the broker may have the Qos2 message in the session. Since the client start
-  with an empty session it don't know it and will re-use the mid. This is not yet fixed.
-
-Also when clean_session is True, this library will republish QoS > 0 message accross network
-reconnection. This means that QoS > 0 message won't be lost. But the standard say that
-if we should discard any message for which the publish packet was sent. Our choice means that
-we are not compliant with the standard and it's possible for QoS 2 to be received twice.
-You should you clean_session = False if you need the QoS 2 guarantee of only one delivery.
-
-Usage and API
+Paho Installation
 -------------
+Paho-MQTT is an open-source client library for the MQTT (MQ Telemetry Transport) protocol, written in Python. It allows developers to connect and publish/subscribe to MQTT brokers, making it a useful tool for building Internet of Things (IoT) applications. The library is part of the Eclipse Paho project, which provides several other MQTT client implementations in different programming languages.
+To install paho-mqtt library to the virtual environment created, type below in the terminal
+::
 
-Detailed API documentation is available through **pydoc**. Samples are available in the **examples** directory.
+    pip install paho-mqtt
 
-The package provides two modules, a full client and a helper for simple publishing.
+On successful installation, you will see a message stating installed.
 
-Getting Started
-***************
+Python Coding: Subscribe and Publish Messages
+--------------
 
-Here is a very simple example that subscribes to the broker $SYS topic tree and prints out the resulting messages:
-
+Here is a code to subscribe and publish messages to mqtt client
 .. code:: python
 
-    import paho.mqtt.client as mqtt
+    import time
+    import paho.mqtt.client as paho
+    from paho import mqtt
 
-    # The callback for when the client receives a CONNACK response from the server.
-    def on_connect(client, userdata, flags, rc):
-        print("Connected with result code "+str(rc))
+    # setting callbacks for different events to see if it works, print the message etc.
+    def on_connect(client, userdata, flags, rc, properties=None):
+      print("CONNACK received with code %s." % rc)
 
-        # Subscribing in on_connect() means that if we lose the connection and
-        # reconnect then subscriptions will be renewed.
-        client.subscribe("$SYS/#")
+    # with this callback you can see if your publish was successful
+    def on_publish(client, userdata, mid, properties=None):
+      print("mid: " + str(mid))
 
-    # The callback for when a PUBLISH message is received from the server.
+    # print which topic was subscribed to
+    def on_subscribe(client, userdata, mid, granted_qos, properties=None):
+      print("Subscribed: " + str(mid) + " " + str(granted_qos))
+
+    # print message, useful for checking if it was successful
     def on_message(client, userdata, msg):
-        print(msg.topic+" "+str(msg.payload))
+      print(msg.topic + " " + str(msg.qos) + " " + str(msg.payload))
 
-    client = mqtt.Client()
+    # using MQTT version 5 here, for 3.1.1: MQTTv311, 3.1: MQTTv31
+    # userdata is user defined data of any type, updated by user_data_set()
+    # client_id is the given name of the client
+    client = paho.Client(client_id="clientname", userdata=None, protocol=paho.MQTTv311, transport='websockets')
     client.on_connect = on_connect
+
+    # enable TLS for secure connection
+    #client.tls_set(tls_version=mqtt.client.ssl.PROTOCOL_TLS)
+    # set username and password
+    #client.username_pw_set("usernane", "password")
+
+
+    # connect to HiveMQ Cloud on port 8883 (default for MQTT)
+    # client.connect("a9da7498ddbd475eb817b02fb90e73e9.s1.eu.hivemq.cloud", 8883)
+    # Connect to HiveMQ Websocket portal on port 8000
+    client.connect("broker.mqttdashboard.com", 8000)
+
+
+    # setting callbacks, use separate functions like above for better visibility
+    client.on_subscribe = on_subscribe
     client.on_message = on_message
+    client.on_publish = on_publish
 
-    client.connect("mqtt.eclipseprojects.io", 1883, 60)
+    # subscribe to all topics of encyclopedia by using the wildcard "#"
+    client.subscribe("testtopic/1356585", qos=1)
 
-    # Blocking call that processes network traffic, dispatches callbacks and
-    # handles reconnecting.
-    # Other loop*() functions are available that give a threaded interface and a
-    # manual interface.
+    # a single publish, this can also be done in loops, etc.
+    client.publish("testtopic/68144686", payload="Hello world!", qos=1)
+
+
+    # loop_forever for simplicity, here you need to stop the loop manually
+    # you can also use loop_start and loop_stop
     client.loop_forever()
 
 Client
 ******
 
-You can use the client class as an instance, within a class or by subclassing. The general usage flow is as follows:
-
-* Create a client instance
-* Connect to a broker using one of the ``connect*()`` functions
-* Call one of the ``loop*()`` functions to maintain network traffic flow with the broker
-* Use ``subscribe()`` to subscribe to a topic and receive messages
-* Use ``publish()`` to publish messages to the broker
-* Use ``disconnect()`` to disconnect from the broker
-
-Callbacks will be called to allow the application to process events as necessary. These callbacks are described below.
-
-Constructor / reinitialise
-``````````````````````````
-
-Client()
-''''''''
-
-.. code:: python
-
-    Client(client_id="", clean_session=True, userdata=None, protocol=MQTTv311, transport="tcp")
-
-The ``Client()`` constructor takes the following arguments:
-
 client_id
     the unique client id string used when connecting to the broker. If
     ``client_id`` is zero length or ``None``, then one will be randomly
     generated. In this case the ``clean_session`` parameter must be ``True``.
-
-clean_session
-    a boolean that determines the client type. If ``True``, the broker will
-    remove all information about this client when it disconnects. If ``False``,
-    the client is a durable client and subscription information and queued
-    messages will be retained when the client disconnects.
-
-    Note that a client will never discard its own outgoing messages on
-    disconnect. Calling connect() or reconnect() will cause the messages to be
-    resent. Use reinitialise() to reset a client to its original state.
 
 userdata
     user defined data of any type that is passed as the ``userdata`` parameter
