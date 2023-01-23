@@ -1,11 +1,9 @@
 HiveMQ MQTT Python Client
 ================================
 
-This document describes the source code for the `HiveMQ <broker.hivemq.com>`_ MQTT Python client library.
+This document describes the code for the Eclipse Paho MQTT Python client library, which implements versions 5.0, 3.1.1, and 3.1 of the MQTT protocol.
 
 This code provides a client class which enable applications to connect to an `MQTT broker to publish messages, and to subscribe to topics and receive published messages. 
-
-It supports Python 2.7.9+ or 3.6+.
 
 The MQTT protocol is a machine-to-machine (M2M)/"Internet of Things" connectivity protocol. Designed as an extremely lightweight publish/subscribe messaging transport, it is useful for connections with remote locations where a small code footprint is required and/or network bandwidth is at a premium.
 
@@ -19,8 +17,8 @@ Contents
 * `Visual Studio Code Installation`_
 * `Virtual Environment Set up and paho package installation`_
 * `Python Code - Subscribe & Publish Messages (Clients)`_
-* `WebSocket and Webclient Execution`_
-
+* `Webclient Execution`_
+* `WebSocket Execution`_
 
 HiveMQ Account Set up - Broker
 ------------
@@ -58,7 +56,7 @@ As a confirmation of successful virtual environment creation, you will see set o
 4. To select interpreter go to View-->Command Palatt-->type python: Select Interpreter-->Enter interpreter path-->Find-->'Open the folder you created'-->Python.exe
 Create a new terminal and confirm that your environment is changed to the new virtual environment you created
 
-Note: Run this in command terminal, powershell terminal requires special permission which may not excute the command.
+Note: Run this in command terminal, powershell terminal requires special permission which may throw some error while running.
 
 Paho Installation
 -------------
@@ -140,8 +138,8 @@ Steps
 1. Login in to HiveMQ Cloud
 2. Go to Web client under manage cluster option
 3. Provide the user name and password, then click on connnect
-4. Subscribe the topic 'testtopic/68144686' - to receive messages from paho client (i.e. python code)
-5. Publish the topic 'testtopic/1356585' - to send messages to paho client (i.e.python code)
+4. Subscribe the topic 'testtopic/68144686' - to receive messages from paho client (i.e. VS Code Environment)
+5. Publish the topic 'testtopic/1356585' - to send messages to paho client (i.e.VS Code Environment)
 6. On successful execution, messages will be sent and received from paho client to the broker.
 
 Web Socket Execution
@@ -152,8 +150,7 @@ For Web socket execution, use client.connect function as below.
       client.connect("broker.mqttdashboard.com", 8000)
 Steps
 1. Go to http://www.hivemq.com/demos/websocket-client/
-2. Go to Web client under manage cluster option
-3. Provide the user name and password, then click on connnect
-4. Subscribe the topic 'testtopic/68144686' - to receive messages from paho client (i.e. python code)
-5. Publish the topic 'testtopic/1356585' - to send messages to paho client (i.e.python code)
-6. On successful execution, messages will be sent and received from paho client to the broker.
+2. Provide the client id and port as 8000, click on connect
+3. Subscribe the topic 'testtopic/68144686' - to receive messages from paho client (i.e. VS Code Environment)
+4. Publish the topic 'testtopic/1356585' - to send messages to paho client (i.e.VS Code Environment)
+5. On successful execution, messages will be sent and received from paho client to the broker.
