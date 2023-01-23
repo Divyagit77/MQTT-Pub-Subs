@@ -130,4 +130,30 @@ Here is a code to subscribe and publish messages to mqtt client
     # you can also use loop_start and loop_stop
     client.loop_forever()
 
+Web Client Execution
+--------------
+For Web clieht execution, use client.connect function as below.
+.. code:: 
+     # connect to HiveMQ Cloud on port 8883 (default for MQTT)
+       client.connect("a9da7498ddbd475eb817b02fb90e73e9.s1.eu.hivemq.cloud", 8883)
+Steps
+1. Login in to HiveMQ Cloud
+2. Go to Web client under manage cluster option
+3. Provide the user name and password, then click on connnect
+4. Subscribe the topic 'testtopic/68144686' - to receive messages from paho client (i.e. python code)
+5. Publish the topic 'testtopic/1356585' - to send messages to paho client (i.e.python code)
+6. On successful execution, messages will be sent and received from paho client to the broker.
 
+Web Socket Execution
+--------------
+For Web socket execution, use client.connect function as below.
+.. code:: 
+    # Connect to HiveMQ Websocket portal on port 8000
+      client.connect("broker.mqttdashboard.com", 8000)
+Steps
+1. Go to http://www.hivemq.com/demos/websocket-client/
+2. Go to Web client under manage cluster option
+3. Provide the user name and password, then click on connnect
+4. Subscribe the topic 'testtopic/68144686' - to receive messages from paho client (i.e. python code)
+5. Publish the topic 'testtopic/1356585' - to send messages to paho client (i.e.python code)
+6. On successful execution, messages will be sent and received from paho client to the broker.
