@@ -1,4 +1,6 @@
-HiveMQ MQTT Python Client
+MQTT Publish Subscribe 
+Client - Paho Python
+Broker - HiveMQ
 ================================
 
 This document describes the code for the Eclipse Paho MQTT Python client library, which implements versions 5.0, 3.1.1, and 3.1 of the MQTT protocol.
